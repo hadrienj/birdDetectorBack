@@ -6,15 +6,14 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-numpy = "*"
-matplotlib = "*"
-scipy = "*"
-seaborn = "*"
-keras = "*"
-tensorflow = "1.15"
 flask = "*"
-librosa = "*"
 gunicorn = "*"
+flask-cors = "*"
+numpy = "*"
+tensorflow = "==1.14"
+librosa = "*"
+keras = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.7"
