@@ -89,10 +89,12 @@ def home():
 
                 if passed:
                     filepath = os.path.join(os.path.dirname(__file__), app.config['UPLOAD_FOLDER'], filename)
+                    print("===", filepath)
 
                     with graph.as_default():
                         set_session(sess)
                         pred = model.predict_on_wav(filepath)
+                        print('pred', pred)
                     return json.dumps(pred[1].tolist())
                     # return redirect(url_for('predict', filename=filename))
             else:
