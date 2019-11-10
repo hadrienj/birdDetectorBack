@@ -75,13 +75,13 @@ def home():
             return redirect(request.url)
 
         if audio_file:
-            print('a')
             if is_allowed_file(audio_file.filename):
                 passed = False
                 try:
                     filename = audio_file.filename
                     filepath = os.path.join(os.path.dirname(__file__),
                                             app.config['UPLOAD_FOLDER'], filename)
+                    print(f'An audio file has been sent. Saving {filepath} ...')
                     audio_file.save(filepath)
                     passed = True
                 except Exception:
