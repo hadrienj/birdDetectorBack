@@ -1,2 +1,3 @@
 .DS_Store
 *.wav
+!bird1.wav
