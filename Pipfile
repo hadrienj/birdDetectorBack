@@ -14,6 +14,7 @@ tensorflow = "==1.14"
 librosa = "*"
 keras = "*"
 matplotlib = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.7"
