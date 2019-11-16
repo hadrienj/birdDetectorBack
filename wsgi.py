@@ -101,7 +101,7 @@ def home():
                         set_session(sess)
                         pred = model.predict_on_wav(filepath)
                         print('d', time.time() - t0)
-                        os.remove(filepath)
+                        # os.remove(filepath)
                     return json.dumps(pred[1].tolist())
                     # return redirect(url_for('predict', filename=filename))
             else:
