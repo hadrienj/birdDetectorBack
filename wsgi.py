@@ -9,6 +9,8 @@ from microfaune_package.microfaune.detection import RNNDetector
 
 import json
 
+import time
+
 tf_config = tf.ConfigProto(
     intra_op_parallelism_threads=1,
     allow_soft_placement=True
@@ -64,11 +66,13 @@ def home():
 
     if request.method == 'POST':
         print("================================================")
+        t0 = time.time()
         if 'file' not in request.files:
             flash('Please choose a file to upload')
             return redirect(request.url)
 
         audio_file = request.files['file']
+        print('a', time.time() - t0)
 
         if audio_file.filename == '':
             flash('Please choose a file to upload')
@@ -79,10 +83,13 @@ def home():
             if is_allowed_file(audio_file.filename):
                 passed = False
                 try:
+                    print('b', time.time() - t0)
+
                     filename = audio_file.filename
                     filepath = os.path.join(os.path.dirname(__file__),
                                             app.config['UPLOAD_FOLDER'], filename)
                     audio_file.save(filepath)
+                    print('c', time.time() - t0)
                     passed = True
                 except Exception:
                     passed = False
@@ -93,6 +100,7 @@ def home():
                     with graph.as_default():
                         set_session(sess)
                         pred = model.predict_on_wav(filepath)
+                        print('d', time.time() - t0)
                         os.remove(filepath)
                     return json.dumps(pred[1].tolist())
                     # return redirect(url_for('predict', filename=filename))
