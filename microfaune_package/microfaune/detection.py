@@ -8,6 +8,8 @@ from tensorflow import math
 
 from .audio import load_wav, create_spec
 
+import librosa
+
 RNN_WEIGHTS_FILE = os.path.abspath(
     os.path.join(os.path.dirname(__file__),
                  "data/model_weights-20190919_220113.h5"))
@@ -112,7 +114,10 @@ class RNNDetector:
         local_score: array-like
             Time step prediction score
         """
-        fs, data = load_wav(wav_file)
+        # fs, data = load_wav(wav_file)
+        print('go')
+        data, fs = librosa.load(wav_file, sr=44100)
+        print(data, fs)
         X = self.compute_features([data])
         scores, local_scores = self.predict(np.array(X))
         return scores[0], local_scores[0]

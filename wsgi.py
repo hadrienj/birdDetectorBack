@@ -42,7 +42,7 @@ load_my_model()
 
 def is_allowed_file(filename):
     """ Checks if a filename's extension is acceptable """
-    allowed_ext = filename.rsplit('.', 1)[1].lower() in ['wav']
+    allowed_ext = filename.rsplit('.', 1)[1].lower() in ['wav', 'mp3']
     return '.' in filename and allowed_ext
 
 
@@ -104,6 +104,9 @@ def home():
                         # os.remove(filepath)
                     return json.dumps(pred[1].tolist())
                     # return redirect(url_for('predict', filename=filename))
+
+                else:
+                    return 'asdf'
             else:
                 flash('Choose a wav file.')
                 return redirect(request.url)
