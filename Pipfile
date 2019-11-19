@@ -4,6 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pylama = "*"
+ipdb = "*"
 
 [packages]
 flask = "*"
@@ -15,6 +17,8 @@ librosa = "*"
 keras = "*"
 matplotlib = "*"
 scipy = "*"
+grpcio = "*"
+grpcio-tools = "*"
 
 [requires]
 python_version = "3.7"
