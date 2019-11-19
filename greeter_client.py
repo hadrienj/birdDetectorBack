@@ -27,9 +27,8 @@ import os
 import helloworld_pb2
 import helloworld_pb2_grpc
 
-PATH_NAME = "/Users/ysewanono/Downloads/split_data"
 AUDIO_FILE_NAME = "SWIFT_20190725_080011_2_4.wav"
-AUDIO_PATH = os.path.join(PATH_NAME, AUDIO_FILE_NAME)
+AUDIO_PATH = os.path.join(AUDIO_FILE_NAME)
 
 
 def get_audio_bytes(path=AUDIO_PATH):
