@@ -11,15 +11,31 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# TODO: FIX ERROR
+# grpc._channel._Rendezvous: <_Rendezvous of RPC that terminated with:
+#         status = StatusCode.RESOURCE_EXHAUSTED
+#         details = "Received message larger than max (4194305 vs. 4194304)"
+#         debug_error_string = "{"created":"@1574162543.663157000","description":"Error received from peer ipv6:[::1]:50051","file":"src/core/lib/surface/call.cc","file_line":1055,"grpc_message":"Received message larger than max (4194305 vs. 4194304)","grpc_status":8}
 """The Python implementation of the GRPC helloworld.Greeter client."""
 
 from __future__ import print_function
 import logging
 
 import grpc
+import os
 
 import helloworld_pb2
 import helloworld_pb2_grpc
+
+PATH_NAME = "/Users/ysewanono/Downloads/split_data"
+AUDIO_FILE_NAME = "SWIFT_20190725_080011_2_4.wav"
+AUDIO_PATH = os.path.join(PATH_NAME, AUDIO_FILE_NAME)
+
+
+def get_audio_bytes(path=AUDIO_PATH):
+    with open(path, "rb") as fd:
+        contents = fd.read()
+    return contents
 
 
 def run():
@@ -29,7 +45,15 @@ def run():
     with grpc.insecure_channel('localhost:50051') as channel:
         stub = helloworld_pb2_grpc.GreeterStub(channel)
         response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
-    print("Greeter client received: " + response.message)
+        print("Greeter client received: " + response.message)
+
+        # Route Prediction
+        audio = get_audio_bytes()[:4194200]
+        print(len(audio))
+        prediction = stub.GetPrediction(helloworld_pb2.AudioFile(
+            audiofile=audio,
+            filename=AUDIO_FILE_NAME))
+        print(prediction)
 
 
 if __name__ == '__main__':

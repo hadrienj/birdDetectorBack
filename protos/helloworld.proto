@@ -41,11 +41,7 @@ message HelloReply {
 //The request audiofile
 message AudioFile {
   bytes audiofile = 1;
-  AudioFileConfig audio_file_config = 2;
-}
-
-message AudioFileConfig {
-  string filename = 1;
+  string filename = 2;
 }
 
 // The prediction from audiofile
