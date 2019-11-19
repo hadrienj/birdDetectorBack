@@ -15,27 +15,50 @@
 
 from concurrent import futures
 import logging
+import os
 
 import grpc
 
 import helloworld_pb2
 import helloworld_pb2_grpc
+from microfaune_package.microfaune.detection import RNNDetector
+
+
+def save_file_in_wave(response, file_name='myfile.wav'):
+    if os.path.exists(file_name):
+        os.remove(file_name)
+    with open(file_name, mode='bx') as f:
+        f.write(response)
 
 
 class Greeter(helloworld_pb2_grpc.GreeterServicer):
+    def __init__(self):
+        self.model = RNNDetector('models/model_weights-20190919_220113.h5')
 
     def SayHello(self, request, context):
         return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
 
     def GetPrediction(self, request, context):
         audiofile = request.audiofile
-        print(audiofile)
+        save_file_in_wave(audiofile, file_name=request.filename)
+        if os.path.exists(request.filename):
+            print("FILE EXISTS")
+
+        print(self.model)
+        # pred = self.model.predict_on_wav(request.filename)
+        # print(pred)
         prediction_list = ["pred1", "pred2"]
         return helloworld_pb2.Prediction(prediction_list=prediction_list)
 
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    options = [
+        ('grpc.max_send_message_length', 50 * 1024 * 1024),
+        ('grpc.max_receive_message_length', 50 * 1024 * 1024)
+        ]
+    server = grpc.server(
+        futures.ThreadPoolExecutor(max_workers=10),
+        options=options)
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
     server.add_insecure_port('[::]:50051')
     server.start()

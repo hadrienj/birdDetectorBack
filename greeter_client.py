@@ -42,13 +42,16 @@ def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    with grpc.insecure_channel('localhost:50051') as channel:
+    options = [
+        ('grpc.max_send_message_length', 50 * 1024 * 1024),
+        ('grpc.max_receive_message_length', 50 * 1024 * 1024)]
+    with grpc.insecure_channel('localhost:50051', options=options) as channel:
         stub = helloworld_pb2_grpc.GreeterStub(channel)
         response = stub.SayHello(helloworld_pb2.HelloRequest(name='you'))
         print("Greeter client received: " + response.message)
 
         # Route Prediction
-        audio = get_audio_bytes()[:4194200]
+        audio = get_audio_bytes()
         print(len(audio))
         prediction = stub.GetPrediction(helloworld_pb2.AudioFile(
             audiofile=audio,
