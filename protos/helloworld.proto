@@ -46,5 +46,5 @@ message AudioFile {
 
 // The prediction from audiofile
 message Prediction {
-  repeated string prediction_list = 1;
+  repeated float prediction_list = 1;
 }

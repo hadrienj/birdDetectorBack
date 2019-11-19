@@ -45,9 +45,9 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
             print("FILE EXISTS")
 
         print(self.model)
-        # pred = self.model.predict_on_wav(request.filename)
-        # print(pred)
-        prediction_list = ["pred1", "pred2"]
+        pred = self.model.predict_on_wav(request.filename)
+
+        prediction_list = pred[1].tolist()
         return helloworld_pb2.Prediction(prediction_list=prediction_list)
 
 
