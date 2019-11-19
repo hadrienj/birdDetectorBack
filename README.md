@@ -12,4 +12,5 @@
 # To adapt client for web (react)
 See (Write JS Client Code Section)[https://grpc.io/docs/tutorials/basic/web/]
 
-### Fore more informations, see [GRPC offical documentations](https://grpc.io/)
+### Fore more informations
+See [GRPC offical documentations](https://grpc.io/)
