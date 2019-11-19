@@ -25,6 +25,7 @@ package helloworld;
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc GetPrediction (AudioFile) returns (Prediction);
 }
 
 // The request message containing the user's name.
@@ -35,4 +36,19 @@ message HelloRequest {
 // The response message containing the greetings
 message HelloReply {
   string message = 1;
+}
+
+//The request audiofile
+message AudioFile {
+  bytes audiofile = 1;
+  AudioFileConfig audio_file_config = 2;
+}
+
+message AudioFileConfig {
+  string filename = 1;
+}
+
+// The prediction from audiofile
+message Prediction {
+  repeated string prediction_list = 1;
 }

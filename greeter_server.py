@@ -27,6 +27,12 @@ class Greeter(helloworld_pb2_grpc.GreeterServicer):
     def SayHello(self, request, context):
         return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
 
+    def GetPrediction(self, request, context):
+        audiofile = request.audiofile
+        print(audiofile)
+        prediction_list = ["pred1", "pred2"]
+        return helloworld_pb2.Prediction(prediction_list=prediction_list)
+
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

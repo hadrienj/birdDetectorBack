@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='helloworld',
   syntax='proto3',
   serialized_options=_b('\n\033io.grpc.examples.helloworldB\017HelloWorldProtoP\001\242\002\003HLW'),
-  serialized_pb=_b('\n\x10helloworld.proto\x12\nhelloworld\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t2I\n\x07Greeter\x12>\n\x08SayHello\x12\x18.helloworld.HelloRequest\x1a\x16.helloworld.HelloReply\"\x00\x42\x36\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3')
+  serialized_pb=_b('\n\x10helloworld.proto\x12\nhelloworld\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t\"V\n\tAudioFile\x12\x11\n\taudiofile\x18\x01 \x01(\x0c\x12\x36\n\x11\x61udio_file_config\x18\x02 \x01(\x0b\x32\x1b.helloworld.AudioFileConfig\"#\n\x0f\x41udioFileConfig\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"%\n\nPrediction\x12\x17\n\x0fprediction_list\x18\x01 \x03(\t2\x89\x01\n\x07Greeter\x12>\n\x08SayHello\x12\x18.helloworld.HelloRequest\x1a\x16.helloworld.HelloReply\"\x00\x12>\n\rGetPrediction\x12\x15.helloworld.AudioFile\x1a\x16.helloworld.PredictionB6\n\x1bio.grpc.examples.helloworldB\x0fHelloWorldProtoP\x01\xa2\x02\x03HLWb\x06proto3')
 )
 
 
@@ -87,8 +87,112 @@ _HELLOREPLY = _descriptor.Descriptor(
   serialized_end=91,
 )
 
+
+_AUDIOFILE = _descriptor.Descriptor(
+  name='AudioFile',
+  full_name='helloworld.AudioFile',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='audiofile', full_name='helloworld.AudioFile.audiofile', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='audio_file_config', full_name='helloworld.AudioFile.audio_file_config', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=93,
+  serialized_end=179,
+)
+
+
+_AUDIOFILECONFIG = _descriptor.Descriptor(
+  name='AudioFileConfig',
+  full_name='helloworld.AudioFileConfig',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='filename', full_name='helloworld.AudioFileConfig.filename', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=181,
+  serialized_end=216,
+)
+
+
+_PREDICTION = _descriptor.Descriptor(
+  name='Prediction',
+  full_name='helloworld.Prediction',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='prediction_list', full_name='helloworld.Prediction.prediction_list', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=218,
+  serialized_end=255,
+)
+
+_AUDIOFILE.fields_by_name['audio_file_config'].message_type = _AUDIOFILECONFIG
 DESCRIPTOR.message_types_by_name['HelloRequest'] = _HELLOREQUEST
 DESCRIPTOR.message_types_by_name['HelloReply'] = _HELLOREPLY
+DESCRIPTOR.message_types_by_name['AudioFile'] = _AUDIOFILE
+DESCRIPTOR.message_types_by_name['AudioFileConfig'] = _AUDIOFILECONFIG
+DESCRIPTOR.message_types_by_name['Prediction'] = _PREDICTION
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 HelloRequest = _reflection.GeneratedProtocolMessageType('HelloRequest', (_message.Message,), {
@@ -105,6 +209,27 @@ HelloReply = _reflection.GeneratedProtocolMessageType('HelloReply', (_message.Me
   })
 _sym_db.RegisterMessage(HelloReply)
 
+AudioFile = _reflection.GeneratedProtocolMessageType('AudioFile', (_message.Message,), {
+  'DESCRIPTOR' : _AUDIOFILE,
+  '__module__' : 'helloworld_pb2'
+  # @@protoc_insertion_point(class_scope:helloworld.AudioFile)
+  })
+_sym_db.RegisterMessage(AudioFile)
+
+AudioFileConfig = _reflection.GeneratedProtocolMessageType('AudioFileConfig', (_message.Message,), {
+  'DESCRIPTOR' : _AUDIOFILECONFIG,
+  '__module__' : 'helloworld_pb2'
+  # @@protoc_insertion_point(class_scope:helloworld.AudioFileConfig)
+  })
+_sym_db.RegisterMessage(AudioFileConfig)
+
+Prediction = _reflection.GeneratedProtocolMessageType('Prediction', (_message.Message,), {
+  'DESCRIPTOR' : _PREDICTION,
+  '__module__' : 'helloworld_pb2'
+  # @@protoc_insertion_point(class_scope:helloworld.Prediction)
+  })
+_sym_db.RegisterMessage(Prediction)
+
 
 DESCRIPTOR._options = None
 
@@ -114,8 +239,8 @@ _GREETER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=93,
-  serialized_end=166,
+  serialized_start=258,
+  serialized_end=395,
   methods=[
   _descriptor.MethodDescriptor(
     name='SayHello',
@@ -124,6 +249,15 @@ _GREETER = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_HELLOREQUEST,
     output_type=_HELLOREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetPrediction',
+    full_name='helloworld.Greeter.GetPrediction',
+    index=1,
+    containing_service=None,
+    input_type=_AUDIOFILE,
+    output_type=_PREDICTION,
     serialized_options=None,
   ),
 ])
