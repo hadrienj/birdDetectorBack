@@ -72,7 +72,7 @@ def home():
             return redirect(request.url)
 
         audio_file = request.files['file']
-        print('a', time.time() - t0)
+        print('a', audio_file.read())
 
         if audio_file.filename == '':
             flash('Please choose a file to upload')
