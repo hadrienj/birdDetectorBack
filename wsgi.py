@@ -10,6 +10,9 @@ from microfaune_package.microfaune.detection import RNNDetector
 import json
 
 import time
+import numpy as np
+import librosa
+import base64
 
 tf_config = tf.ConfigProto(
     intra_op_parallelism_threads=1,
@@ -59,6 +62,35 @@ def get_static():
     return 'ff'
 
 
+def predict(X):
+    """Predict bird presence on spectograms.
+
+    Parameters
+    ----------
+    X: array-like
+        List of features on which to run the model.
+
+    Returns
+    -------
+    scores: array-like
+        Prediction scores of the classifier on each audio signal
+    local_scores: array-like
+        Step-by-step  prediction scores for each audio signal
+    """
+    scores = []
+    local_scores = []
+    for x in X:
+        print('ffff', x[np.newaxis, ...].shape)
+        s, local_s = model.predict(x[np.newaxis, ...])
+        scores.append(s[0])
+        print(local_s)
+        local_scores.append(np.array(local_s).flatten())
+        print(local_scores)
+    scores = np.array(s)
+    return scores, local_scores
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'GET':
@@ -67,46 +99,54 @@ def home():
     if request.method == 'POST':
         print("================================================")
         t0 = time.time()
-        if 'file' not in request.files:
-            flash('Please choose a file to upload')
-            return redirect(request.url)
+        # if 'file' not in request.files:
+        #     flash('Please choose a file to upload')
+        #     return redirect(request.url)
 
-        audio_file = request.files['file']
-        print('a', audio_file.read())
+        # audio_file = request.files['file']
+        audio_file = request.data
 
-        if audio_file.filename == '':
-            flash('Please choose a file to upload')
-            return redirect(request.url)
+        # if audio_file.filename == '':
+        #     flash('Please choose a file to upload')
+        #     return redirect(request.url)
 
         if audio_file:
             print('a')
-            if is_allowed_file(audio_file.filename):
-                passed = False
-                try:
-                    print('b', time.time() - t0)
+            if True:#is_allowed_file(audio_file.filename):
+                print('alors')
 
-                    filename = audio_file.filename
-                    filepath = os.path.join(os.path.dirname(__file__),
-                                            app.config['UPLOAD_FOLDER'], filename)
-                    audio_file.save(filepath)
-                    print('c', time.time() - t0)
-                    passed = True
-                except Exception:
-                    passed = False
+                audio_val = np.array(list(json.loads(audio_file).values()))
+                print('a', audio_val.shape)
+                mel = audio_val.reshape(1, -1, 40, 1)
+                mel = mel.astype(np.float32)
+                mel = librosa.power_to_db(mel)
+                np.save('mel', mel)
+                # print('b', mel.shape)
+                # print('test', mel[0, 1, 2, 0], mel[0, 3, 0, 0])
 
-                if passed:
-                    filepath = os.path.join(os.path.dirname(__file__), app.config['UPLOAD_FOLDER'], filename)
+                # data_bytes = audio_file.read()
+                # print(data_bytes)
+                # mel = np.frombuffer(base64.b64decode(data_bytes), dtype=np.float32)
+                # mel = mel.astype(np.float32)
 
-                    with graph.as_default():
-                        set_session(sess)
-                        pred = model.predict_on_wav(filepath)
-                        print('d', time.time() - t0)
-                        # os.remove(filepath)
-                    return json.dumps(pred[1].tolist())
-                    # return redirect(url_for('predict', filename=filename))
+                print('d mel', mel)
 
-                else:
-                    return 'asdf'
+                # mel = librosa.feature.melspectrogram(S=mel, sr=48000, n_fft=2048,
+                #                                      hop_length=1024, n_mels=40)
+
+                # # mel = json.loads(audio_file)
+                print('d mel', mel.shape)
+
+                mel = mel.reshape(1, -1, 40, 1)
+                # mel = mel.astype(np.float32)
+                # mel = librosa.power_to_db(mel)
+
+                with graph.as_default():
+                    set_session(sess)
+                    scores, local_scores = predict(np.array(mel))
+                    print('e', time.time() - t0)
+                return json.dumps(local_scores[0].tolist())
+
             else:
                 flash('Choose a wav file.')
                 return redirect(request.url)
@@ -121,3 +161,5 @@ if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
            "please wait until server has fully started"))
     app.run()
+
+

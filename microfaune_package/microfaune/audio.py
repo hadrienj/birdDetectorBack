@@ -50,7 +50,7 @@ def load_mp3(path):
     data, fs = librosa.core.load(path, sr=None)
 
     return fs, data
-  
+
 
 def cut_audio(old_path, new_path, start, end):
     """
