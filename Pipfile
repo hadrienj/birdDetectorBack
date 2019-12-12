@@ -16,6 +16,7 @@ keras = "*"
 matplotlib = "*"
 scipy = "*"
 streaming-form-data = "*"
+tensorflowjs = "*"
 
 [requires]
 python_version = "3.7"

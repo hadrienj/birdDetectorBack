@@ -5,6 +5,7 @@ import numpy as np
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow import math
+import soundfile as sf
 
 from .audio import load_wav, create_spec
 
@@ -28,6 +29,7 @@ class RNNDetector:
         if self._model is None:
             self._model = self.create_model()
             self._model.load_weights(self.weights_file)
+            self._model.save('aa')
         return self._model
 
     def create_model(self):
@@ -113,6 +115,27 @@ class RNNDetector:
             Time step prediction score
         """
         fs, data = load_wav(wav_file)
+        X = self.compute_features([data])
+        scores, local_scores = self.predict(np.array(X))
+        return scores[0], local_scores[0]
+
+    def predict_on_ogg(self, ogg_file):
+        """Detect bird presence in ogg file.
+
+        Parameters
+        ----------
+        ogg_file: str
+            wav file path.
+
+        Returns
+        -------
+        score: float
+            Prediction score of the classifier on the whole sequence
+        local_score: array-like
+            Time step prediction score
+        """
+        data, fs = sf.read(ogg_file, dtype=np.int16)
+        data = data.astype(np.float32)
         X = self.compute_features([data])
         scores, local_scores = self.predict(np.array(X))
         return scores[0], local_scores[0]
